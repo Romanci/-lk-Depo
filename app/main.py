@@ -79,10 +79,14 @@ def create_product(product: ProductCreate, db: Session = Depends(get_db), curren
         raise HTTPException(status_code=403, detail="Not authorized")
     return InventoryService.create_product(
         db,
-        product.name,
-        product.sku,
-        product.unit_price,
-        product.reorder_level
+        name=product.name,
+        sku=product.sku,
+        unit_price=product.unit_price,
+        category=product.category,
+        production_type=product.production_type,
+        currency=product.currency,
+        description=product.description,
+        reorder_level=product.reorder_level
     )
 
 @app.get("/mrp/requirements/{product_id}")

@@ -19,12 +19,12 @@ def db():
     Base.metadata.drop_all(bind=engine)
 
 def test_create_product(db):
-    product = InventoryService.create_product(db, "Test Product", "SKU123", 100.0)
+    product = InventoryService.create_product(db, "Test Product", "SKU123", 100.0, "raw_material", "purchased")
     assert product.name == "Test Product"
     assert product.sku == "SKU123"
     assert product.stock_quantity == 0.0
 
 def test_update_stock(db):
-    product = InventoryService.create_product(db, "Stock Item", "SKU456", 50.0)
+    product = InventoryService.create_product(db, "Stock Item", "SKU456", 50.0, "raw_material", "purchased")
     InventoryService.update_stock(db, product.id, 20)
     assert product.stock_quantity == 20.0
