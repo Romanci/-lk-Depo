@@ -1,44 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factory ERP - AI Powered</title>
+    <title>İrfan Çelik | Industrial ERP & MRP AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50 font-sans">
     <div id="app">
-        <!-- Login Form -->
-        <div id="login-section" class="flex items-center justify-center min-h-screen">
-            <div class="bg-white p-8 rounded shadow-md w-96">
-                <h2 class="text-2xl font-bold mb-6 text-center">Fabrika ERP Giriş</h2>
-                <input type="text" id="username" placeholder="Kullanıcı Adı" class="w-full p-2 mb-4 border rounded">
-                <input type="password" id="password" placeholder="Şifre" class="w-full p-2 mb-4 border rounded">
-                <button onclick="login()" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Giriş Yap</button>
+        <!-- Login Section -->
+        <div id="login-section" class="flex items-center justify-center min-h-screen bg-slate-900">
+            <div class="bg-white p-10 rounded-xl shadow-2xl w-full max-w-md">
+                <div class="text-center mb-10">
+                    <i class="fas fa-industry text-5xl text-blue-600 mb-4"></i>
+                    <h2 class="text-3xl font-bold text-gray-800">Fabrika ERP Giriş</h2>
+                    <p class="text-gray-500 mt-2">Endüstriyel Üretim Yönetim Sistemi</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-3 top-3.5 text-gray-400"></i>
+                        <input type="text" id="username" placeholder="Kullanıcı Adı" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-3.5 text-gray-400"></i>
+                        <input type="password" id="password" placeholder="Şifre" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <button id="login-btn" onclick="login()" class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 shadow-lg">Giriş Yap</button>
+                </div>
+                <p class="text-center text-xs text-gray-400 mt-6">Admin: admin / admin123</p>
             </div>
         </div>
 
-        <!-- Dashboard -->
-        <div id="dashboard-section" class="hidden p-8">
-            <div class="flex justify-between items-center mb-8">
-                <h1 class="text-3xl font-bold">ERP Kontrol Paneli</h1>
-                <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded">Çıkış</button>
+        <!-- Main Dashboard -->
+        <div id="dashboard-section" class="hidden min-h-screen flex flex-col md:flex-row">
+            <!-- Sidebar -->
+            <div class="w-full md:w-64 bg-slate-800 text-white flex-shrink-0">
+                <div class="p-6 text-center border-b border-slate-700">
+                    <h2 class="text-xl font-bold uppercase tracking-wider text-blue-400">İrfan Çelik ERP</h2>
+                    <p id="user-display" class="text-xs mt-1 text-gray-400 font-medium"></p>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <button onclick="switchTab('inventory')" class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-700 transition" id="btn-inventory">
+                        <i class="fas fa-boxes w-6"></i><span>Stok Yönetimi</span>
+                    </button>
+                    <button onclick="switchTab('production')" class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-700 transition" id="btn-production">
+                        <i class="fas fa-cogs w-6"></i><span>Üretim & MRP</span>
+                    </button>
+                    <button onclick="switchTab('hr')" class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-700 transition" id="btn-hr">
+                        <i class="fas fa-users w-6"></i><span>İnsan Kaynakları</span>
+                    </button>
+                    <button onclick="switchTab('suppliers')" class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-700 transition" id="btn-suppliers">
+                        <i class="fas fa-truck w-6"></i><span>Tedarikçiler</span>
+                    </button>
+                    <button onclick="switchTab('analytics')" class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-700 transition" id="btn-analytics">
+                        <i class="fas fa-chart-line w-6"></i><span>Verimlilik & Finans</span>
+                    </button>
+                    <div class="pt-4 border-t border-slate-700 mt-4">
+                        <button onclick="logout()" class="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-red-900 transition text-red-400">
+                            <i class="fas fa-sign-out-alt w-6"></i><span>Çıkış Yap</span>
+                        </button>
+                    </div>
+                </nav>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Inventory -->
-                <div class="bg-white p-6 rounded shadow">
-                    <h2 class="text-xl font-semibold mb-4">Stok Durumu</h2>
-                    <div id="inventory-list" class="space-y-2">
-                        <!-- Inventory items will be loaded here -->
+            <!-- Content Area -->
+            <div class="flex-1 p-6 md:p-10 overflow-y-auto">
+                <header class="mb-8 flex justify-between items-center">
+                    <h1 id="tab-title" class="text-3xl font-bold text-gray-800 text-left">Stok Yönetimi</h1>
+                    <div class="text-sm text-gray-500 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+                        <i class="far fa-calendar-alt mr-2 text-blue-500"></i> <span id="current-date"></span>
+                    </div>
+                </header>
+
+                <!-- Inventory Tab -->
+                <div id="tab-inventory" class="tab-content">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden text-left">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 border-b border-gray-200">
+                                <tr>
+                                    <th class="p-4 font-semibold text-gray-600">Ürün / SKU</th>
+                                    <th class="p-4 font-semibold text-gray-600">Kategori</th>
+                                    <th class="p-4 font-semibold text-gray-600 text-right">Miktar</th>
+                                    <th class="p-4 font-semibold text-gray-600 text-right">Birim Fiyat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-list"></tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- AI Forecast -->
-                <div class="bg-white p-6 rounded shadow">
-                    <h2 class="text-xl font-semibold mb-4">Yapay Zeka Talep Tahmini</h2>
-                    <div id="ai-forecast" class="p-4 bg-blue-50 text-blue-800 rounded">
-                        Tahmin verisi yüklemek için bir ürün seçin.
+                <!-- Production & MRP Tab -->
+                <div id="tab-production" class="tab-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
+                        <!-- Product Selection -->
+                        <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-bold mb-4 text-blue-600">Üretim Planla</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Ürün Seçin</label>
+                                    <select id="mrp-product-select" class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"></select>
+                                </div>
+                                <button onclick="runMRP()" class="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 transition">
+                                    <i class="fas fa-calculator mr-2"></i> MRP Analizi Çalıştır
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- MRP Results -->
+                        <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-bold mb-4 text-gray-800">MRP Gereksinim Analizi (BOM Patlatma)</h3>
+                            <div id="mrp-results" class="space-y-3">
+                                <p class="text-gray-400 italic">Analiz yapmak için bir ürün seçin.</p>
+                            </div>
+                        </div>
+
+                        <!-- AI Recommendations Area -->
+                        <div class="lg:col-span-3 bg-blue-900 text-white p-8 rounded-xl shadow-lg mt-4">
+                            <div class="flex items-center space-x-4 mb-6">
+                                <i class="fas fa-brain text-4xl text-yellow-400"></i>
+                                <div>
+                                    <h3 class="text-xl font-bold">Yapay Zeka Karar Destek Sistemi</h3>
+                                    <p class="text-blue-200 text-sm">Üretim ve Tedarik Zinciri Optimizasyon Önerileri</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="ai-recommendations">
+                                <div class="bg-blue-800/50 p-6 rounded-lg border border-blue-700">
+                                    <p class="text-blue-300 italic text-center">Analiz bekleniyor...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HR Tab -->
+                <div id="tab-hr" class="tab-content hidden text-left">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="employee-list"></div>
+                </div>
+
+                <!-- Suppliers Tab -->
+                <div id="tab-suppliers" class="tab-content hidden text-left">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="supplier-list"></div>
+                </div>
+
+                <!-- Analytics & Finance Tab -->
+                <div id="tab-analytics" class="tab-content hidden text-left">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-bold mb-6 text-gray-800">Döviz Kurları (Canlı)</h3>
+                            <div id="currency-rates" class="space-y-4"></div>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="text-xl font-bold mb-6 text-gray-800">Fabrika Verimlilik Skorları</h3>
+                            <div id="efficiency-metrics" class="space-y-6"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,6 +163,9 @@
     <script>
         const API_URL = "http://localhost:8000";
         let token = localStorage.getItem("token");
+        let userData = JSON.parse(localStorage.getItem("userData") || "{}");
+
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
         if (token) {
             showDashboard();
@@ -61,55 +179,219 @@
             formData.append("username", user);
             formData.append("password", pass);
 
-            const res = await fetch(`${API_URL}/token`, {
-                method: "POST",
-                body: formData
-            });
-
-            if (res.ok) {
-                const data = await res.json();
-                token = data.access_token;
-                localStorage.setItem("token", token);
-                showDashboard();
-            } else {
-                alert("Giriş başarısız!");
-            }
+            try {
+                const res = await fetch(`${API_URL}/token`, { method: "POST", body: formData });
+                if (res.ok) {
+                    const data = await res.json();
+                    token = data.access_token;
+                    userData = { full_name: data.full_name, role: data.role };
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("userData", JSON.stringify(userData));
+                    showDashboard();
+                } else {
+                    alert("Giriş başarısız! Kullanıcı adı veya şifre hatalı.");
+                }
+            } catch (err) { alert("Sunucuya bağlanılamadı!"); }
         }
 
         function logout() {
-            localStorage.removeItem("token");
+            localStorage.clear();
             location.reload();
         }
 
         function showDashboard() {
             document.getElementById("login-section").classList.add("hidden");
             document.getElementById("dashboard-section").classList.remove("hidden");
+            document.getElementById("user-display").innerText = `${userData.full_name} (${userData.role.toUpperCase()})`;
             loadInventory();
+            switchTab('inventory');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+
+            // UI Updates
+            const titles = {
+                'inventory': 'Stok Yönetimi',
+                'production': 'Üretim & MRP (BOM+Routing)',
+                'hr': 'İnsan Kaynakları',
+                'suppliers': 'Tedarikçi Yönetimi',
+                'analytics': 'Verimlilik & Finans Analizi'
+            };
+            document.getElementById('tab-title').innerText = titles[tab];
+
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('bg-blue-600', 'text-white'));
+            document.getElementById(`btn-${tab}`).classList.add('bg-blue-600', 'text-white');
+
+            if (tab === 'inventory') loadInventory();
+            if (tab === 'production') loadProductsForMRP();
+            if (tab === 'hr') loadEmployees();
+            if (tab === 'suppliers') loadSuppliers();
+            if (tab === 'analytics') loadAnalytics();
         }
 
         async function loadInventory() {
-            const res = await fetch(`${API_URL}/inventory`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
+            const res = await fetch(`${API_URL}/inventory`, { headers: { "Authorization": `Bearer ${token}` } });
             const data = await res.json();
             const list = document.getElementById("inventory-list");
             list.innerHTML = data.map(item => `
-                <div class="flex justify-between border-b py-2 cursor-pointer hover:bg-gray-50" onclick="loadForecast(${item.id})">
-                    <span>${item.name} (SKU: ${item.sku})</span>
-                    <span class="font-bold">${item.stock_quantity} Adet</span>
+                <tr class="border-b hover:bg-gray-50 transition">
+                    <td class="p-4">
+                        <div class="font-bold text-gray-800">${item.name}</div>
+                        <div class="text-xs text-gray-500">${item.sku}</div>
+                    </td>
+                    <td class="p-4 text-sm text-gray-600"><span class="bg-gray-100 px-2 py-1 rounded">${item.category}</span></td>
+                    <td class="p-4 text-right font-mono font-bold ${item.stock_quantity < 5 ? 'text-red-500' : 'text-green-600'}">
+                        ${item.stock_quantity} Adet
+                    </td>
+                    <td class="p-4 text-right text-gray-700 font-semibold">${item.unit_price.toLocaleString('tr-TR')} ${item.currency}</td>
+                </tr>
+            `).join("");
+        }
+
+        async function loadProductsForMRP() {
+            const res = await fetch(`${API_URL}/inventory`, { headers: { "Authorization": `Bearer ${token}` } });
+            const data = await res.json();
+            const select = document.getElementById("mrp-product-select");
+            select.innerHTML = data.filter(i => i.category === 'final_product' || i.category === 'unit').map(i => `
+                <option value="${i.id}">${i.name}</option>
+            `).join("");
+        }
+
+        async function runMRP() {
+            const productId = document.getElementById("mrp-product-select").value;
+            const res = await fetch(`${API_URL}/mrp/requirements/${productId}`, { headers: { "Authorization": `Bearer ${token}` } });
+            const data = await res.json();
+
+            const results = document.getElementById("mrp-results");
+            results.innerHTML = data.map(item => `
+                <div class="flex justify-between items-center p-4 rounded-lg border ${item.shortage > 0 ? 'border-red-200 bg-red-50' : 'border-green-200 bg-green-50'}">
+                    <div>
+                        <span class="font-bold text-gray-800">${item.name}</span>
+                        <span class="text-xs ml-2 text-gray-500">Gereken: ${item.needed} | Eldeki: ${item.in_stock}</span>
+                    </div>
+                    <div class="text-right">
+                        ${item.shortage > 0
+                            ? `<span class="text-red-600 font-bold"><i class="fas fa-exclamation-triangle"></i> Eksik: ${item.shortage}</span>
+                               <button onclick="getSupplierAI(${item.product_id})" class="ml-2 text-xs bg-red-600 text-white px-2 py-1 rounded shadow-sm hover:bg-red-700">AI Tedarik Önerisi</button>`
+                            : '<span class="text-green-600 font-bold"><i class="fas fa-check-circle"></i> Stok Yeterli</span>'}
+                    </div>
+                </div>
+            `).join("");
+
+            // Also load routing for AI recommendation
+            loadRoutingAI(productId);
+        }
+
+        async function loadRoutingAI(productId) {
+            const res = await fetch(`${API_URL}/mrp/routing/${productId}`, { headers: { "Authorization": `Bearer ${token}` } });
+            const data = await res.json();
+            const aiArea = document.getElementById("ai-recommendations");
+
+            if (data.length > 0) {
+                const recRes = await fetch(`${API_URL}/ai/recommend/employee/1`, { headers: { "Authorization": `Bearer ${token}` } });
+                const rec = await recRes.json();
+
+                aiArea.innerHTML = `
+                    <div class="bg-blue-800/50 p-6 rounded-lg border border-blue-700">
+                        <h4 class="font-bold text-yellow-400 mb-2"><i class="fas fa-user-check"></i> Personel Önerisi</h4>
+                        <p class="text-sm">"${data[0].operation}" operasyonu için en uygun çalışan:</p>
+                        <div class="mt-3 bg-white/10 p-3 rounded">
+                            <div class="font-bold">${rec.full_name}</div>
+                            <div class="text-xs text-blue-200">Yetenekler: ${rec.skills}</div>
+                            <div class="text-xs font-bold text-green-400 mt-1">Uyum Skoru: %${rec.score}</div>
+                        </div>
+                    </div>
+                    <div class="bg-blue-800/50 p-6 rounded-lg border border-blue-700">
+                        <h4 class="font-bold text-yellow-400 mb-2"><i class="fas fa-chart-line"></i> Üretim Tahmini</h4>
+                        <p class="text-sm">Toplam ${data.length} operasyon adımı belirlendi.</p>
+                        <ul class="text-xs mt-2 space-y-1 text-blue-100">
+                            ${data.map(d => `<li><i class="fas fa-arrow-right text-blue-400 mr-1"></i> ${d.operation} (${d.work_center})</li>`).join("")}
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        async function getSupplierAI(productId) {
+            const res = await fetch(`${API_URL}/ai/recommend/supplier/${productId}`, { headers: { "Authorization": `Bearer ${token}` } });
+            const data = await res.json();
+            alert(`AI Önerisi: Bu parçayı en güvenilir tedarikçimiz olan "${data.name}" (Güven Skoru: %${data.reliability_score}) üzerinden almanızı öneririm.`);
+        }
+
+        async function loadEmployees() {
+            const res = await fetch(`${API_URL}/employees`, { headers: { "Authorization": `Bearer ${token}` } });
+            const data = await res.json();
+            const list = document.getElementById("employee-list");
+            list.innerHTML = data.map(emp => `
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="bg-blue-100 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                            ${emp.full_name.charAt(0)}
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">${emp.full_name}</h4>
+                            <p class="text-xs text-gray-500">${emp.department}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600 border-t pt-4">
+                        <div class="flex justify-between"><span>Beceriler:</span><span class="font-semibold text-gray-800">${emp.skills}</span></div>
+                        <div class="flex justify-between"><span>Performans:</span><span class="text-green-600 font-bold">%${emp.performance_score}</span></div>
+                    </div>
                 </div>
             `).join("");
         }
 
-        async function loadForecast(productId) {
-            const res = await fetch(`${API_URL}/ai/forecast/${productId}`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
+        async function loadSuppliers() {
+            const res = await fetch(`${API_URL}/suppliers`, { headers: { "Authorization": `Bearer ${token}` } });
             const data = await res.json();
-            document.getElementById("ai-forecast").innerHTML = `
-                <p><strong>Ürün ID:</strong> ${data.product_id}</p>
-                <p><strong>Gelecek Ay Tahmini:</strong> ${Math.round(data.forecasted_demand_next_month)} adet</p>
-                <p class="text-sm mt-2 italic">Kaynak: ${data.data_source}</p>
+            const list = document.getElementById("supplier-list");
+            list.innerHTML = data.map(sup => `
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-bold text-gray-800 text-lg">${sup.name}</h4>
+                        <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">${sup.category}</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600 border-t pt-4">
+                        <div><i class="fas fa-envelope mr-2"></i> ${sup.contact_info}</div>
+                        <div class="flex justify-between mt-2">
+                            <span>Güvenilirlik:</span>
+                            <span class="text-blue-600 font-bold">${sup.reliability_score} / 100</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-2 rounded-full mt-1">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: ${sup.reliability_score}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        async function loadAnalytics() {
+            const ratesRes = await fetch(`${API_URL}/finance/rates`, { headers: { "Authorization": `Bearer ${token}` } });
+            const rates = await ratesRes.json();
+            document.getElementById('currency-rates').innerHTML = `
+                <div class="flex justify-between border-b pb-2"><span>Dolar (USD)</span><span class="font-bold text-green-600">${rates.USD} ₺</span></div>
+                <div class="flex justify-between border-b pb-2"><span>Euro (EUR)</span><span class="font-bold text-blue-600">${rates.EUR} ₺</span></div>
+                <div class="flex justify-between border-b pb-2"><span>Sterlin (GBP)</span><span class="font-bold text-purple-600">${rates.GBP} ₺</span></div>
+                <p class="text-xs text-gray-400 mt-4 italic text-right">Son Güncelleme: ${rates.updated_at}</p>
+            `;
+
+            const effRes = await fetch(`${API_URL}/analytics/efficiency`, { headers: { "Authorization": `Bearer ${token}` } });
+            const eff = await effRes.json();
+            document.getElementById('efficiency-metrics').innerHTML = `
+                <div>
+                    <div class="flex justify-between text-sm mb-1"><span>Genel Fabrika Verimliliği</span><span class="font-bold text-blue-600">%${eff.overall_efficiency}</span></div>
+                    <div class="w-full bg-gray-100 h-3 rounded-full"><div class="bg-blue-600 h-3 rounded-full" style="width: ${eff.overall_efficiency}%"></div></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1"><span>Personel Performansı</span><span class="font-bold text-green-600">%${eff.personnel_efficiency}</span></div>
+                    <div class="w-full bg-gray-100 h-3 rounded-full"><div class="bg-green-600 h-3 rounded-full" style="width: ${eff.personnel_efficiency}%"></div></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm mb-1"><span>İş İstasyonu (Tezgah) Kullanımı</span><span class="font-bold text-yellow-600">%${eff.work_center_efficiency}</span></div>
+                    <div class="w-full bg-gray-100 h-3 rounded-full"><div class="bg-yellow-500 h-3 rounded-full" style="width: ${eff.work_center_efficiency}%"></div></div>
+                </div>
             `;
         }
     </script>
