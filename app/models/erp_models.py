@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.db.session import Base
@@ -39,3 +39,13 @@ class Order(Base):
     order_date = Column(DateTime(timezone=True), server_default=func.now())
 
     product = relationship("Product")
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    full_name = Column(String)
+    role = Column(String, default="operator") # admin, manager, operator
+    is_active = Column(Boolean, default=True)

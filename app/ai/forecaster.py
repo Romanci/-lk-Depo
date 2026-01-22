@@ -29,7 +29,7 @@ class DemandForecaster:
 
         # Predict next 30 days
         next_date_days = df['days_from_start'].max() + 30
-        prediction = self.model.predict([[next_date_days]])
+        prediction = self.model.predict(pd.DataFrame([[next_date_days]], columns=['days_from_start']))
 
         return max(0, prediction[0])
 
