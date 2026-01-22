@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+pandas
+scikit-learn
+pytest
+python-jose[cryptography]
+passlib
+bcrypt==4.0.1
+python-multipart
